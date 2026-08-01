@@ -1,0 +1,6 @@
+Feature: Digital Wallet Transfer Limits
+
+R1. Tier 1 users can transfer a maximum of 20,000 per transaction and 50,000 per day.
+R2. Tier 2 users can transfer a maximum of 200,000 per transaction and 500,000 per day.
+R3. The daily transfer limit resets at midnight.
+R4. A transfer that exceeds the remaining daily limit is rejected with a message showing the remaining limit.

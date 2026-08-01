@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Generate focused, traceable QA test cases from a feature specification." />
+    <title>QA Test Case Generator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2317324d%22/><text x=%2250%22 y=%2263%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2240%22 font-weight=%22700%22 fill=%22white%22>QA</text></svg>" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#generator">Skip to generator</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="QA Test Case Generator home">
+        <span class="brand-mark" aria-hidden="true">QA</span>
+        <span><strong>Test Case Generator</strong><small>AI-assisted, human-approved</small></span>
+      </a>
+      <span class="local-badge"><span aria-hidden="true"></span>Local session</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">Part 6 · AI-assisted QA</p>
+        <h1>Turn a feature spec into focused test cases.</h1>
+        <p>Paste requirements, choose the scope, and download one review-ready Excel sheet. Unsupported assumptions are rejected before export.</p>
+        <div class="trust-row" aria-label="Generator safeguards">
+          <span>Structured JSON</span><span>Traceability checked</span><span>Credentials not saved</span>
+        </div>
+      </section>
+
+      <section class="workspace" id="generator" aria-labelledby="form-title">
+        <form id="generator-form" novalidate>
+          <div class="panel-heading">
+            <div><p class="step">01 · Define the feature</p><h2 id="form-title">Feature specification</h2></div>
+            <span id="character-count">0 / 50,000</span>
+          </div>
+
+          <label for="feature-name">Feature name <span>Optional</span></label>
+          <input id="feature-name" name="featureName" maxlength="120" placeholder="e.g. Wallet transfer limits" />
+
+          <label for="specification">Paste feature specification</label>
+          <textarea id="specification" name="specification" maxlength="50000" required placeholder="Paste acceptance criteria, business rules, or a feature specification here…"></textarea>
+
+          <div class="settings-grid">
+            <div><label for="test-level">Test level</label><select id="test-level" name="testLevel"><option>Unspecified</option><option>UI</option><option>API</option><option>Integration</option><option>End to end</option></select></div>
+            <div><label for="maximum-cases">Maximum cases</label><input id="maximum-cases" name="maximumCases" type="number" min="1" max="100" value="20" /></div>
+          </div>
+
+          <details class="configuration">
+            <summary><span><strong>OpenRouter configuration</strong><small>Optional one-request overrides</small></span><span aria-hidden="true">+</span></summary>
+            <div class="config-body">
+              <p id="config-status" class="config-status">Checking server configuration…</p>
+              <label for="model">Model override</label>
+              <input id="model" name="model" autocomplete="off" placeholder="e.g. provider/model-name" />
+              <label for="api-key">API-key override</label>
+              <div class="password-field"><input id="api-key" name="apiKey" type="password" autocomplete="new-password" placeholder="Used for this request only" /><button type="button" id="toggle-key" aria-label="Show API key">Show</button></div>
+              <p class="privacy-note">Overrides remain in memory for this request and are never saved by the application.</p>
+            </div>
+          </details>
+
+          <div id="message" class="message" role="status" aria-live="polite" hidden></div>
+          <button class="generate-button" id="generate-button" type="submit"><span>Generate Excel test cases</span><span aria-hidden="true">→</span></button>
+        </form>
+
+        <aside class="guidance" aria-label="Generation process">
+          <p class="step">02 · Quality gate</p>
+          <h2>Only defensible cases get exported.</h2>
+          <ol>
+            <li><span>1</span><div><strong>Read the specification</strong><p>Identify stated requirements without inventing functionality.</p></div></li>
+            <li><span>2</span><div><strong>Generate focused coverage</strong><p>Create the smallest meaningful set of observable test cases.</p></div></li>
+            <li><span>3</span><div><strong>Validate every case</strong><p>Check traceability, specificity, assumptions, and duplication.</p></div></li>
+            <li><span>4</span><div><strong>Export one sheet</strong><p>Download a formatted workbook only when every case passes.</p></div></li>
+          </ol>
+          <div class="review-callout"><strong>Human review is mandatory</strong><p>AI output is a draft. A QA engineer remains responsible for approving each case.</p></div>
+        </aside>
+      </section>
+    </main>
+    <footer><span>Runs locally on your machine.</span><span>No credentials or specifications are retained.</span></footer>
+  </body>
+</html>
