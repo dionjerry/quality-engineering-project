@@ -23,6 +23,10 @@ export class BookingTracker {
     this.bookingIds.delete(bookingId);
   }
 
+  public track(bookingId: number): void {
+    this.bookingIds.add(bookingId);
+  }
+
   public async cleanup(): Promise<void> {
     const failures: string[] = [];
     for (const bookingId of this.bookingIds) {
@@ -51,4 +55,3 @@ export class BookingTracker {
     }
   }
 }
-

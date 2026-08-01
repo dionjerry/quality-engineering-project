@@ -1,8 +1,11 @@
 import { randomUUID } from "node:crypto";
 
-import type { Booking } from "../schemas/api.schemas.js";
+import type { ValidBooking } from "../schemas/api.schemas.js";
 
-export function buildBooking(label = "Test"): Booking {
+export function buildBooking(
+  label = "Test",
+  overrides: Partial<ValidBooking> = {},
+): ValidBooking {
   const runId = randomUUID().replaceAll("-", "").slice(0, 12);
   return {
     firstname: `Auth${label}`,
@@ -13,7 +16,7 @@ export function buildBooking(label = "Test"): Booking {
       checkin: "2026-09-10",
       checkout: "2026-09-12",
     },
-    additionalneeds: "Phase 2 authorization test",
+    additionalneeds: "Automated API test",
+    ...overrides,
   };
 }
-

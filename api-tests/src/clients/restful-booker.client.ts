@@ -28,9 +28,20 @@ export class RestfulBookerClient {
   }
 
   public async createBooking(booking: Booking): Promise<APIResponse> {
+    return this.createBookingPayload(booking);
+  }
+
+  public async createBookingPayload(payload: unknown): Promise<APIResponse> {
     return this.request.post("/booking", {
       headers: { "Content-Type": "application/json" },
-      data: booking,
+      data: payload,
+    });
+  }
+
+  public async createBookingRaw(body: string): Promise<APIResponse> {
+    return this.request.post("/booking", {
+      headers: { "Content-Type": "application/json" },
+      data: body,
     });
   }
 
@@ -43,9 +54,17 @@ export class RestfulBookerClient {
     booking: Booking,
     token?: string,
   ): Promise<APIResponse> {
+    return this.updateBookingPayload(bookingId, booking, token);
+  }
+
+  public async updateBookingPayload(
+    bookingId: number,
+    payload: unknown,
+    token?: string,
+  ): Promise<APIResponse> {
     return this.request.put(`/booking/${bookingId}`, {
       headers: this.protectedHeaders(token),
-      data: booking,
+      data: payload,
     });
   }
 
@@ -54,9 +73,17 @@ export class RestfulBookerClient {
     booking: BookingPatch,
     token?: string,
   ): Promise<APIResponse> {
+    return this.partialUpdateBookingPayload(bookingId, booking, token);
+  }
+
+  public async partialUpdateBookingPayload(
+    bookingId: number,
+    payload: unknown,
+    token?: string,
+  ): Promise<APIResponse> {
     return this.request.patch(`/booking/${bookingId}`, {
       headers: this.protectedHeaders(token),
-      data: booking,
+      data: payload,
     });
   }
 

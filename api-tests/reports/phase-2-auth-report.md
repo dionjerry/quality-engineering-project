@@ -118,4 +118,4 @@ Confirmed deterministic defects remain executable using Playwright's `test.fail`
 - GET `/booking` without authentication is documented behavior and is not classified as an authentication defect.
 - Pagination is an enhancement/risk candidate for the filtering phase.
 - Case-sensitive name filtering must be reproduced against controlled local data during the filtering phase before it can be classified.
-
+- Identical-date booking behavior is characterized as an open inventory question in [`phase-3-crud-report.md`](phase-3-crud-report.md), not a confirmed defect without a resource-capacity rule.
