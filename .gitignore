@@ -146,6 +146,8 @@ vite.config.ts.timestamp-*
 **/playwright-report/
 **/test-results/
 **/blob-report/
+**/all-blob-reports/
+**/pages-site/
 
 # macOS metadata
 .DS_Store
