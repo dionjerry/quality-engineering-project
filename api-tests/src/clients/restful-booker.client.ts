@@ -3,6 +3,7 @@ import type { APIRequestContext, APIResponse } from "@playwright/test";
 import type {
   AuthCredentials,
   Booking,
+  BookingFilter,
   BookingPatch,
 } from "../schemas/api.schemas.js";
 
@@ -23,7 +24,7 @@ export class RestfulBookerClient {
   public async authenticateRaw(body: string): Promise<APIResponse> {
     return this.request.post("/auth", {
       headers: { "Content-Type": "application/json" },
-      data: body,
+      data: Buffer.from(body),
     });
   }
 
@@ -41,12 +42,22 @@ export class RestfulBookerClient {
   public async createBookingRaw(body: string): Promise<APIResponse> {
     return this.request.post("/booking", {
       headers: { "Content-Type": "application/json" },
-      data: body,
+      data: Buffer.from(body),
     });
   }
 
   public async getBooking(bookingId: number): Promise<APIResponse> {
     return this.request.get(`/booking/${bookingId}`);
+  }
+
+  public async getBookingIds(filters: BookingFilter = {}): Promise<APIResponse> {
+    return this.request.get("/booking", { params: filters });
+  }
+
+  public async getBookingIdsWithParams(
+    params: Record<string, string | number>,
+  ): Promise<APIResponse> {
+    return this.request.get("/booking", { params });
   }
 
   public async updateBooking(
@@ -68,6 +79,17 @@ export class RestfulBookerClient {
     });
   }
 
+  public async updateBookingRaw(
+    bookingId: number,
+    body: string,
+    token?: string,
+  ): Promise<APIResponse> {
+    return this.request.put(`/booking/${bookingId}`, {
+      headers: this.protectedHeaders(token),
+      data: Buffer.from(body),
+    });
+  }
+
   public async partialUpdateBooking(
     bookingId: number,
     booking: BookingPatch,
@@ -84,6 +106,17 @@ export class RestfulBookerClient {
     return this.request.patch(`/booking/${bookingId}`, {
       headers: this.protectedHeaders(token),
       data: payload,
+    });
+  }
+
+  public async partialUpdateBookingRaw(
+    bookingId: number,
+    body: string,
+    token?: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`/booking/${bookingId}`, {
+      headers: this.protectedHeaders(token),
+      data: Buffer.from(body),
     });
   }
 
