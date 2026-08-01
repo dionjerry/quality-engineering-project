@@ -7,6 +7,7 @@
     "service:up": "node scripts/compose.mjs up -d --wait",
     "service:down": "node scripts/compose.mjs down",
     "test": "playwright test",
+    "test:ci": "playwright test",
     "test:smoke": "playwright test tests/health.spec.ts",
     "test:auth": "playwright test tests/authentication.spec.ts",
     "test:authorization": "playwright test tests/authorization.spec.ts",
