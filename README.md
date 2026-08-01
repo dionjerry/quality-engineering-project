@@ -49,6 +49,20 @@ npm run service:down     # Stop and remove the local service
 
 Reports are generated locally in `api-tests/playwright-report/` and `api-tests/test-results/`. These generated directories are intentionally excluded from version control.
 
+Part 6 Task B provides a local OpenRouter-powered test-case generator. It accepts pasted feature requirements and downloads one validated Excel worksheet:
+
+```bash
+cd ai
+npm install
+cp .env.example .env
+# Set OPENROUTER_API_KEY and OPENROUTER_MODEL, then:
+npm start
+```
+
+Open `http://127.0.0.1:4173`. See [`ai/README.md`](ai/README.md) for CLI usage, runtime overrides, validation rules, and security details.
+
+A sanitized, successfully validated live output is available at [`ai/examples/Digital-Wallet-Test-Cases.xlsx`](ai/examples/Digital-Wallet-Test-Cases.xlsx). It contains 9 test cases generated from the digital-wallet transfer-limit specification.
+
 The GitHub Actions workflow runs on pushes, pull requests targeting `develop` or `main`, manual dispatches, and nightly at 02:00 UTC (03:00 WAT). It runs lint and strict type-checking before executing the complete API suite across four parallel shards. Each shard provisions an isolated, digest-pinned Restful Booker container and reads `API_USERNAME` and `API_PASSWORD` from GitHub repository secrets.
 
 Shard blob reports are merged into one HTML report and one JUnit report. Combined reports and failure diagnostics are retained as workflow artifacts for 14 days. Only a successful `main` run can publish the latest green report to GitHub Pages; traces, screenshots, request diagnostics, and JUnit XML are not published publicly.
@@ -61,10 +75,12 @@ Known product defects remain executable with Playwright's expected-failure marke
 
 - The assessment is in progress.
 - Part 1 documents are currently available in [`docs/Part-1`](docs/Part-1/).
-- The canonical AI usage log is available at [`docs/AI-Usage.pdf`](docs/AI-Usage.pdf) and currently covers Parts 1, 2, and 5.
+- The canonical AI usage log is available at [`docs/AI-Usage.pdf`](docs/AI-Usage.pdf) and currently covers Parts 1, 2, 5, and 6.
 - Part 2 automation is complete: local service availability, authentication, authorization, deterministic CRUD, runtime schemas, negative/boundary behavior, and filter correctness are covered.
 - The final Part 2 defect report is available at [`docs/Part-2/Bug-Report.pdf`](docs/Part-2/Bug-Report.pdf), and the canonical AI usage log includes both Part 1 and Part 2 work.
 - Part 5 CI/CD is complete. Its implementation report is available at [`docs/Part-5/CI-CD-Implementation-Report.pdf`](docs/Part-5/CI-CD-Implementation-Report.pdf), and the latest successful `main` report is published on the [live QA dashboard](https://dionjerry.github.io/quality-engineering-project/).
+- Part 6 Task A is complete. The AI-generated test-design review, prompts, retained cases, corrections, rejected cases, and human evaluation are documented in [`docs/Part-6/AI-Critique.pdf`](docs/Part-6/AI-Critique.pdf).
+- Part 6 Task B is implemented under [`ai`](ai/). Its prompt design, verified live input/output, validation approach, and trust policy are documented in [`docs/Part-6/AI-Utility.pdf`](docs/Part-6/AI-Utility.pdf). The sanitized live workbook is available at [`ai/examples/Digital-Wallet-Test-Cases.xlsx`](ai/examples/Digital-Wallet-Test-Cases.xlsx).
 - Identical-date bookings are characterized as an open inventory and overbooking question because the API exposes no room/resource identifier or availability rule. They are not marked as a confirmed defect without a product requirement.
 - Restful Booker does not expose a token expiry duration, revocation endpoint, or deterministic method for producing a naturally expired token. Stale/invalid-token rejection is covered without claiming time-based expiry.
 - The API test configuration rejects non-local targets to prevent accidental testing of the public Restful Booker service.

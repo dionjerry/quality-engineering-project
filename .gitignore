@@ -149,5 +149,15 @@ vite.config.ts.timestamp-*
 **/all-blob-reports/
 **/pages-site/
 
+# AI utility generated exports and runtime artifacts
+ai/reports/**
+!ai/reports/.gitkeep
+ai/**/*.xlsx
+ai/**/*.csv
+!ai/examples/Digital-Wallet-Test-Cases.xlsx
+ai/**/*.tmp.json
+ai/logs/
+ai/.playwright-cli/
+
 # macOS metadata
 .DS_Store
