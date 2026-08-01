@@ -17,6 +17,8 @@ The supplied Restful Booker image is pinned for repeatability and runs as `linux
 ```bash
 cd api-tests
 npm ci
+cp .env.example .env
+# Set API_USERNAME and API_PASSWORD in .env to the local Restful Booker credentials.
 npm run test:local
 ```
 

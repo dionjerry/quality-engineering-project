@@ -1,4 +1,5 @@
 import { AuthErrorSchema, AuthSuccessSchema } from "../src/schemas/api.schemas.js";
+import { environment } from "../src/config/environment.js";
 import { expect, test } from "../src/fixtures/api.fixture.js";
 
 test.describe("POST /auth authentication", () => {
@@ -6,12 +7,12 @@ test.describe("POST /auth authentication", () => {
     booker,
   }) => {
     const firstResponse = await booker.authenticate({
-      username: "admin",
-      password: "password123",
+      username: environment.username,
+      password: environment.password,
     });
     const secondResponse = await booker.authenticate({
-      username: "admin",
-      password: "password123",
+      username: environment.username,
+      password: environment.password,
     });
 
     expect(firstResponse.status()).toBe(200);
@@ -24,11 +25,11 @@ test.describe("POST /auth authentication", () => {
   for (const testCase of [
     {
       name: "invalid username",
-      credentials: { username: "invalid-user", password: "password123" },
+      credentials: { username: "invalid-user", password: environment.password },
     },
     {
       name: "invalid password",
-      credentials: { username: "admin", password: "invalid-password" },
+      credentials: { username: environment.username, password: "invalid-password" },
     },
   ]) {
     test(`${testCase.name} is rejected with 401`, async ({ booker }) => {
@@ -48,22 +49,22 @@ test.describe("POST /auth authentication", () => {
   for (const testCase of [
     {
       name: "missing username",
-      credentials: { password: "password123" },
+      credentials: { password: environment.password },
       requiredFields: ["username"],
     },
     {
       name: "missing password",
-      credentials: { username: "admin" },
+      credentials: { username: environment.username },
       requiredFields: ["password"],
     },
     {
       name: "empty username",
-      credentials: { username: "", password: "password123" },
+      credentials: { username: "", password: environment.password },
       requiredFields: ["username"],
     },
     {
       name: "empty password",
-      credentials: { username: "admin", password: "" },
+      credentials: { username: environment.username, password: "" },
       requiredFields: ["password"],
     },
     {
@@ -105,7 +106,7 @@ test.describe("POST /auth authentication", () => {
   });
 
   test("malformed JSON returns 400 and no token", async ({ booker }) => {
-    const response = await booker.authenticateRaw('{"username":"admin",');
+    const response = await booker.authenticateRaw('{"username":');
     const body = await response.text();
 
     expect(response.status()).toBe(400);
