@@ -1,0 +1,127 @@
+name: API Tests
+
+on:
+  push:
+  pull_request:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-tests-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: api-tests
+
+jobs:
+  quality:
+    name: Lint and type-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: api-tests/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+  api-tests:
+    name: API tests (shard ${{ matrix.shard }}/4)
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+
+    services:
+      restful-booker:
+        image: mwinteringham/restfulbooker@sha256:e4a04233731ceca2e6d99bca16689e0d4bc44631047ab351b6f11b5fa08fb418
+        ports:
+          - 3001:3001
+        options: >-
+          --health-cmd "curl --fail --silent http://localhost:3001/ping"
+          --health-interval 2s
+          --health-timeout 2s
+          --health-retries 30
+          --health-start-period 5s
+
+    env:
+      API_BASE_URL: http://127.0.0.1:3001
+      API_USERNAME: ${{ secrets.API_USERNAME }}
+      API_PASSWORD: ${{ secrets.API_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: api-tests/package-lock.json
+
+      - name: Verify required credentials
+        shell: bash
+        run: |
+          if [[ -z "$API_USERNAME" || -z "$API_PASSWORD" ]]; then
+            echo "API_USERNAME and API_PASSWORD repository secrets are required." >&2
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Playwright shard
+        run: npm run test:ci -- --shard=${{ matrix.shard }}/4
+
+      - name: Upload Playwright HTML report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report-shard-${{ matrix.shard }}
+          path: api-tests/playwright-report/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload JUnit report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: junit-report-shard-${{ matrix.shard }}
+          path: api-tests/test-results/junit.xml
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload test failure artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results-shard-${{ matrix.shard }}
+          path: api-tests/test-results/artifacts/
+          if-no-files-found: ignore
+          retention-days: 14
