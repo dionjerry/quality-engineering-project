@@ -67,7 +67,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-005: negative prices are accepted; see reports/phase-3-crud-report.md",
+        "BUG-API-005: negative prices are accepted; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`${method}NegativePrice`);
       const payload = method === "PATCH" ? { totalprice: -1 } : { ...base, totalprice: -1 };
@@ -89,7 +89,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-006: blank names are accepted; see reports/phase-3-crud-report.md",
+        "BUG-API-006: blank names are accepted; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`${method}BlankNames`);
       const payload =
@@ -114,7 +114,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-008: string deposit status is coerced; see reports/phase-3-crud-report.md",
+        "BUG-API-008: string deposit status is coerced; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`${method}WrongBoolean`);
       const payload =
@@ -137,7 +137,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-009: reversed date ranges are accepted; see reports/phase-3-crud-report.md",
+        "BUG-API-009: reversed date ranges are accepted; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const reversedDates = { checkin: "2026-11-20", checkout: "2026-11-10" };
       const base = buildBooking(`${method}ReverseDates`);
@@ -169,7 +169,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-007: missing required fields return 500; see reports/phase-3-crud-report.md",
+        "BUG-API-007: missing required fields return 500; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const response = await booker.createBookingPayload(
         withoutField(buildBooking(`Missing${field}`), field),
@@ -189,7 +189,7 @@ test.describe("Booking request schema and business-rule validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-010: nonexistent resources return 405; see reports/phase-3-crud-report.md",
+        "BUG-API-010: nonexistent resources return 405; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const bookingId = await bookings.create(buildBooking(`${method}NotFound`));
       expect((await booker.deleteBooking(bookingId, validToken)).status()).toBe(201);

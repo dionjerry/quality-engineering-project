@@ -129,7 +129,7 @@ test.describe("GET /booking filtering correctness", () => {
   }) => {
     test.fail(
       true,
-      "BUG-API-015: exact checkin boundaries are excluded; see reports/phase-5-filtering-report.md",
+      "BUG-API-015: exact checkin boundaries are excluded; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const firstname = buildBooking("CheckinBoundary").firstname;
     const exactId = await bookings.create(
@@ -192,7 +192,7 @@ test.describe("GET /booking filtering correctness", () => {
   test("applies a combined inclusive date range", async ({ booker, bookings }) => {
     test.fail(
       true,
-      "BUG-API-015: combined ranges exclude exact checkin boundaries; see reports/phase-5-filtering-report.md",
+      "BUG-API-015: combined ranges exclude exact checkin boundaries; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const firstname = buildBooking("CombinedRange").firstname;
     const exactId = await bookings.create(
@@ -252,7 +252,7 @@ test.describe("GET /booking filtering correctness", () => {
   }) => {
     test.fail(
       true,
-      "BUG-API-016: invalid filter dates return 500; see reports/phase-5-filtering-report.md",
+      "BUG-API-016: invalid filter dates return 500; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const response = await booker.getBookingIdsWithParams({ checkin: "not-a-date" });
     expect(response.status()).toBe(400);
@@ -263,7 +263,7 @@ test.describe("GET /booking filtering correctness", () => {
   }) => {
     test.fail(
       true,
-      "BUG-API-013: impossible filter dates are normalized; see reports/phase-5-filtering-report.md",
+      "BUG-API-013: impossible filter dates are normalized; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const response = await booker.getBookingIdsWithParams({ checkin: "2032-02-30" });
     if (response.status() === 200) await parseAndHydrate(booker, response);

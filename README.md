@@ -49,7 +49,7 @@ Known product defects remain executable with Playwright's expected-failure marke
 - Part 1 documents are currently available in [`docs/Part-1`](docs/Part-1/).
 - The AI usage log is maintained in [`docs/AI-Usage.pdf`](docs/AI-Usage.pdf) and will be updated throughout the assessment.
 - Part 2 automation is complete: local service availability, authentication, authorization, deterministic CRUD, runtime schemas, negative/boundary behavior, and filter correctness are covered.
-- Temporary phase reports remain under `api-tests/reports/`. Final consolidation into `/docs/Part-2/Bug-Report.pdf` and replacement of `/docs/AI-Usage.pdf` are intentionally deferred until the Part 2 documentation step.
+- The final Part 2 defect report is available at [`docs/Part-2/Bug-Report.pdf`](docs/Part-2/Bug-Report.pdf), and the canonical AI usage log includes both Part 1 and Part 2 work.
 - Identical-date bookings are characterized as an open inventory and overbooking question because the API exposes no room/resource identifier or availability rule. They are not marked as a confirmed defect without a product requirement.
 - Restful Booker does not expose a token expiry duration, revocation endpoint, or deterministic method for producing a naturally expired token. Stale/invalid-token rejection is covered without claiming time-based expiry.
 - The API test configuration rejects non-local targets to prevent accidental testing of the public Restful Booker service.

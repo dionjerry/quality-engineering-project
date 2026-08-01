@@ -89,7 +89,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-011: field types are inconsistently validated; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-011: field types are inconsistently validated; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`WrongType${testCase.method}`);
       const payload =
@@ -111,7 +111,7 @@ test.describe("Booking negative and boundary validation", () => {
   }) => {
     test.fail(
       true,
-      "BUG-API-012: decimal prices are truncated; see reports/phase-4-negative-boundary-report.md",
+      "BUG-API-012: decimal prices are truncated; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const payload = buildBooking("DecimalPrice", { totalprice: 99.95 });
     const result = await submitMutation({
@@ -139,7 +139,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-012: prices are silently coerced; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-012: prices are silently coerced; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`PriceCoercion${testCase.method}`);
       const invalid = { totalprice: testCase.value };
@@ -161,7 +161,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-013: impossible dates are normalized; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-013: impossible dates are normalized; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const invalidDates = { checkin: "2031-02-30", checkout: "2031-02-31" };
       const base = buildBooking(`ImpossibleDates${method}`);
@@ -187,7 +187,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-014: invalid body shapes return 500; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-014: invalid body shapes return 500; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const response = testCase.raw
         ? await booker.createBookingRaw(testCase.payload as string)
@@ -204,7 +204,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-006: whitespace names become blank; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-006: whitespace names become blank; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`Whitespace${method}`);
       const invalid = { firstname: "   ", lastname: "\t" };
@@ -224,7 +224,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-008: string false is coerced to true; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-008: string false is coerced to true; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const base = buildBooking(`StringFalse${method}`);
       const invalid = { depositpaid: "false" };
@@ -244,7 +244,7 @@ test.describe("Booking negative and boundary validation", () => {
     }) => {
       test.fail(
         true,
-        "BUG-API-009: zero-night stays are accepted; see reports/phase-4-negative-boundary-report.md",
+        "BUG-API-009: zero-night stays are accepted; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const equalDates = { checkin: "2031-04-10", checkout: "2031-04-10" };
       const base = buildBooking(`EqualDates${method}`);
