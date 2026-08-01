@@ -73,6 +73,7 @@ jobs:
       API_BASE_URL: http://127.0.0.1:3001
       API_USERNAME: ${{ secrets.API_USERNAME }}
       API_PASSWORD: ${{ secrets.API_PASSWORD }}
+      PLAYWRIGHT_NO_COPY_PROMPT: "1"
 
     steps:
       - name: Check out repository
@@ -99,29 +100,130 @@ jobs:
       - name: Run Playwright shard
         run: npm run test:ci -- --shard=${{ matrix.shard }}/4
 
-      - name: Upload Playwright HTML report
+      - name: Upload Playwright blob report
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
-          name: playwright-report-shard-${{ matrix.shard }}
-          path: api-tests/playwright-report/
+          name: blob-report-shard-${{ matrix.shard }}
+          path: api-tests/blob-report/
           if-no-files-found: warn
-          retention-days: 14
-
-      - name: Upload JUnit report
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v6
-        with:
-          name: junit-report-shard-${{ matrix.shard }}
-          path: api-tests/test-results/junit.xml
-          if-no-files-found: warn
-          retention-days: 14
+          retention-days: 1
 
       - name: Upload test failure artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-shard-${{ matrix.shard }}
           path: api-tests/test-results/artifacts/
           if-no-files-found: ignore
           retention-days: 14
+
+  merge-reports:
+    name: Merge Playwright reports
+    needs: api-tests
+    if: ${{ always() && !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: api-tests/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download shard blob reports
+        uses: actions/download-artifact@v8
+        with:
+          pattern: blob-report-shard-*
+          path: api-tests/all-blob-reports
+          merge-multiple: true
+
+      - name: Merge Playwright reports
+        run: npm run report:merge
+
+      - name: Upload combined Playwright HTML report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-html-report
+          path: api-tests/playwright-report/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload combined JUnit report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: junit-report
+          path: api-tests/test-results/junit.xml
+          if-no-files-found: warn
+          retention-days: 14
+
+  publish-pages:
+    name: Publish latest green report
+    needs:
+      - api-tests
+      - merge-reports
+    if: >-
+      ${{
+        github.ref == 'refs/heads/main' &&
+        github.event_name != 'pull_request' &&
+        needs.api-tests.result == 'success' &&
+        needs.merge-reports.result == 'success'
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Download combined Playwright report
+        uses: actions/download-artifact@v8
+        with:
+          name: playwright-html-report
+          path: api-tests/playwright-report
+
+      - name: Download combined JUnit report
+        uses: actions/download-artifact@v8
+        with:
+          name: junit-report
+          path: api-tests/test-results
+
+      - name: Build report dashboard
+        env:
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GITHUB_COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+        run: npm run report:site
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: api-tests/pages-site
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

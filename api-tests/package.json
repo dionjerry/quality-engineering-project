@@ -18,6 +18,8 @@
     "test:phase2": "playwright test tests/authentication.spec.ts tests/authorization.spec.ts tests/crud.spec.ts tests/schema-validation.spec.ts tests/negative-boundary.spec.ts tests/filtering.spec.ts",
     "test:local": "npm run service:up && npm test",
     "test:report": "playwright show-report playwright-report",
+    "report:merge": "playwright merge-reports --config=playwright.merge.config.ts all-blob-reports",
+    "report:site": "node scripts/build-report-site.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck && npm run test:smoke"

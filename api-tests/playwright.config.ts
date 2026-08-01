@@ -2,15 +2,20 @@ import { defineConfig, type ReporterDescription } from "@playwright/test";
 
 import { environment } from "./src/config/environment.js";
 
-const reporters: ReporterDescription[] = [
-  ["list"],
-  ["html", { outputFolder: "playwright-report", open: "never" }],
-  ["junit", { outputFile: "test-results/junit.xml" }],
-];
-
-if (process.env.CI) {
-  reporters.push(["github"]);
-}
+const reporters: ReporterDescription[] = process.env.CI
+  ? [["list"], ["github"], ["blob", { outputDir: "blob-report" }]]
+  : [
+      ["list"],
+      [
+        "html",
+        {
+          outputFolder: "playwright-report",
+          open: "never",
+          title: "Restful Booker API Test Report",
+        },
+      ],
+      ["junit", { outputFile: "test-results/junit.xml" }],
+    ];
 
 export default defineConfig({
   testDir: "./tests",
