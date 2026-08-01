@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Latest Restful Booker API automation results and GitHub Actions run history."
+    />
+    <title>Restful Booker API Test Report</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%2317324d%22/><text x=%2250%22 y=%2262%22 text-anchor=%22middle%22 font-size=%2242%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22>RB</text></svg>" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body data-repository="dionjerry/quality-engineering-project" data-workflow="api-tests.yml">
+    <a class="skip-link" href="#main-content">Skip to report summary</a>
+
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="Restful Booker API test dashboard home">
+        <span class="brand-mark" aria-hidden="true">RB</span>
+        <span>
+          <strong>Restful Booker</strong>
+          <small>API quality dashboard</small>
+        </span>
+      </a>
+      <a
+        class="header-link"
+        href="https://github.com/dionjerry/quality-engineering-project/actions/workflows/api-tests.yml"
+      >
+        View GitHub Actions
+      </a>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="report-title">
+        <div class="hero-copy">
+          <div class="status-line">
+            <span class="status-dot" aria-hidden="true"></span>
+            Latest published run passed
+          </div>
+          <p class="eyebrow">Automated API verification</p>
+          <h1 id="report-title">Restful Booker API Test Report</h1>
+          <p class="hero-description">
+            Deterministic Playwright coverage for authentication, authorization, CRUD, schema validation,
+            boundaries, and booking filters against an isolated local service.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="latest/">Open full Playwright report</a>
+            <a class="button button-secondary" href="%%RUN_URL%%">Open workflow run</a>
+          </div>
+        </div>
+
+        <aside class="run-card" aria-label="Latest run details">
+          <div class="run-card-header">
+            <span>Latest green run</span>
+            <span class="success-badge">Passed</span>
+          </div>
+          <dl>
+            <div><dt>Run</dt><dd>#%%RUN_NUMBER%%</dd></div>
+            <div><dt>Commit</dt><dd><a href="%%COMMIT_URL%%">%%COMMIT_SHORT%%</a></dd></div>
+            <div><dt>Published</dt><dd><time data-iso-time="%%GENERATED_AT%%">%%GENERATED_AT%%</time></dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="metrics" aria-label="Test result summary">
+        <article class="metric-card">
+          <span class="metric-label">Tests executed</span>
+          <strong>%%TOTAL_TESTS%%</strong>
+          <span>Across the complete API suite</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">Known-bug checks</span>
+          <strong>%%KNOWN_BUG_CHECKS%%</strong>
+          <span>Visible expected failures</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">Test execution</span>
+          <strong>%%DURATION%%</strong>
+          <span>Combined test duration</span>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">Parallelization</span>
+          <strong>4</strong>
+          <span>Independent CI shards</span>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel overview-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Pipeline design</p>
+              <h2>Quality signals at a glance</h2>
+            </div>
+          </div>
+          <div class="signal-list">
+            <div class="signal">
+              <span class="signal-icon" aria-hidden="true">01</span>
+              <div><strong>Quality gate first</strong><p>Lint and strict TypeScript checks complete before API execution.</p></div>
+            </div>
+            <div class="signal">
+              <span class="signal-icon" aria-hidden="true">02</span>
+              <div><strong>Isolated local target</strong><p>Every shard starts its own pinned Restful Booker Docker service.</p></div>
+            </div>
+            <div class="signal">
+              <span class="signal-icon" aria-hidden="true">03</span>
+              <div><strong>Actionable defects</strong><p>Known bugs stay visible without keeping the pipeline permanently red.</p></div>
+            </div>
+            <div class="signal">
+              <span class="signal-icon" aria-hidden="true">04</span>
+              <div><strong>Failure evidence retained</strong><p>Traces remain attached to their workflow run and are excluded from public Pages.</p></div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel policy-panel">
+          <p class="eyebrow">Expected-failure policy</p>
+          <h2>Green does not hide known bugs</h2>
+          <p>
+            Confirmed defects use Playwright’s expected-failure marker. Reproduction keeps CI green; an
+            unexpected pass fails the run so the defect record can be reviewed.
+          </p>
+          <a href="latest/" class="text-link">Inspect bug-linked tests <span aria-hidden="true">→</span></a>
+        </aside>
+      </section>
+
+      <section class="panel history-panel" aria-labelledby="history-title">
+        <div class="section-heading history-heading">
+          <div>
+            <p class="eyebrow">Run history</p>
+            <h2 id="history-title">Recent workflow activity</h2>
+          </div>
+          <span class="live-indicator"><span aria-hidden="true"></span> Live from GitHub</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Status</th><th>Run</th><th>Branch</th><th>Trigger</th><th>Commit</th><th>Started</th><th>Duration</th></tr>
+            </thead>
+            <tbody id="run-history">
+              <tr><td colspan="7" class="loading-state">Loading recent workflow runs…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="history-error" class="history-error" hidden>
+          Run history is temporarily unavailable.
+          <a href="https://github.com/dionjerry/quality-engineering-project/actions/workflows/api-tests.yml">
+            Browse it directly on GitHub Actions.
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Automated with Playwright, TypeScript, Docker, and GitHub Actions.</span>
+      <a href="https://github.com/dionjerry/quality-engineering-project">View repository</a>
+    </footer>
+  </body>
+</html>

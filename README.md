@@ -17,6 +17,8 @@ The supplied Restful Booker image is pinned for repeatability and runs as `linux
 ```bash
 cd api-tests
 npm ci
+cp .env.example .env
+# Set API_USERNAME and API_PASSWORD in .env to the local Restful Booker credentials.
 npm run test:local
 ```
 
@@ -24,6 +26,7 @@ npm run test:local
 
 ```bash
 npm test                 # Run the complete suite against the running local service
+npm run test:ci -- --shard=1/4 # Run one CI-compatible Playwright shard
 npm run test:smoke       # Run the service-availability check only
 npm run test:auth        # Run authentication scenarios
 npm run test:authorization # Run protected-endpoint authorization scenarios
@@ -40,6 +43,8 @@ npm run service:down     # Stop and remove the local service
 ```
 
 Reports are generated locally in `api-tests/playwright-report/` and `api-tests/test-results/`. These generated directories are intentionally excluded from version control.
+
+CI-compatible runs retain Playwright traces and error context for unexpected failures. Screenshot capture is also requested on failure, but API-only tests normally have no browser page to capture. Confirmed defects marked with `test.fail()` remain visible in the HTML and JUnit reports rather than producing failure-only traces.
 
 Known product defects remain executable with Playwright's expected-failure marker. These tests assert the correct expected behavior while allowing the pipeline to remain green as long as the documented defect reproduces. If the product is fixed and an expected-failure test unexpectedly passes, Playwright fails the run so the marker and defect record can be reviewed.
 
