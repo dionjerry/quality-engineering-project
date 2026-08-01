@@ -1,6 +1,7 @@
 import { test as base } from "@playwright/test";
 
 import { RestfulBookerClient } from "../clients/restful-booker.client.js";
+import { environment } from "../config/environment.js";
 import { BookingTracker } from "../helpers/booking-tracker.js";
 import { AuthSuccessSchema } from "../schemas/api.schemas.js";
 
@@ -16,8 +17,8 @@ export const test = base.extend<ApiFixtures>({
   },
   validToken: async ({ booker }, use) => {
     const response = await booker.authenticate({
-      username: "admin",
-      password: "password123",
+      username: environment.username,
+      password: environment.password,
     });
     const authentication = AuthSuccessSchema.parse(await response.json());
     await use(authentication.token);

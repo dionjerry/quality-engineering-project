@@ -34,7 +34,7 @@ test.describe("POST /auth authentication", () => {
     test(`${testCase.name} is rejected with 401`, async ({ booker }) => {
       test.fail(
         true,
-        "BUG-API-001: invalid credentials return 200; see reports/phase-2-auth-report.md",
+        "BUG-API-001: invalid credentials return 200; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const response = await booker.authenticate(testCase.credentials);
       const body: unknown = await response.json();
@@ -75,7 +75,7 @@ test.describe("POST /auth authentication", () => {
     test(`${testCase.name} returns field-specific validation`, async ({ booker }) => {
       test.fail(
         true,
-        "BUG-API-004: required credentials return generic 200; see reports/phase-2-auth-report.md",
+        "BUG-API-004: required credentials return generic 200; see ../../docs/Part-2/Bug-Report.pdf",
       );
       const response = await booker.authenticate(testCase.credentials);
       const body: unknown = await response.json();
@@ -92,7 +92,7 @@ test.describe("POST /auth authentication", () => {
   test("zero-byte body returns field-specific validation", async ({ booker }) => {
     test.fail(
       true,
-      "BUG-API-004: empty body returns generic 200; see reports/phase-2-auth-report.md",
+      "BUG-API-004: empty body returns generic 200; see ../../docs/Part-2/Bug-Report.pdf",
     );
     const response = await booker.authenticateRaw("");
     const body: unknown = await response.json();
@@ -112,4 +112,3 @@ test.describe("POST /auth authentication", () => {
     expect(body).not.toContain("token");
   });
 });
-

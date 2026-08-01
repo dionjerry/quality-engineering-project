@@ -27,7 +27,11 @@ npm test                 # Run the complete suite against the running local serv
 npm run test:smoke       # Run the service-availability check only
 npm run test:auth        # Run authentication scenarios
 npm run test:authorization # Run protected-endpoint authorization scenarios
-npm run test:phase2      # Run authentication and authorization together
+npm run test:crud        # Run deterministic CRUD lifecycle scenarios
+npm run test:schema      # Run booking schema and known-defect scenarios
+npm run test:negative    # Run negative and boundary scenarios
+npm run test:filtering   # Run deterministic booking-filter scenarios
+npm run test:phase2      # Run every Part 2 API group
 npm run lint             # Run static lint checks
 npm run typecheck        # Run strict TypeScript checks
 npm run check            # Run lint, type-check, and the smoke test
@@ -44,7 +48,9 @@ Known product defects remain executable with Playwright's expected-failure marke
 - The assessment is in progress.
 - Part 1 documents are currently available in [`docs/Part-1`](docs/Part-1/).
 - The AI usage log is maintained in [`docs/AI-Usage.pdf`](docs/AI-Usage.pdf) and will be updated throughout the assessment.
-- Part 2 currently covers local service availability, authentication, and authorization for PUT, PATCH, and DELETE. Full CRUD, negative/boundary, and filtering coverage are not yet included.
+- Part 2 automation is complete: local service availability, authentication, authorization, deterministic CRUD, runtime schemas, negative/boundary behavior, and filter correctness are covered.
+- The final Part 2 defect report is available at [`docs/Part-2/Bug-Report.pdf`](docs/Part-2/Bug-Report.pdf), and the canonical AI usage log includes both Part 1 and Part 2 work.
+- Identical-date bookings are characterized as an open inventory and overbooking question because the API exposes no room/resource identifier or availability rule. They are not marked as a confirmed defect without a product requirement.
 - Restful Booker does not expose a token expiry duration, revocation endpoint, or deterministic method for producing a naturally expired token. Stale/invalid-token rejection is covered without claiming time-based expiry.
 - The API test configuration rejects non-local targets to prevent accidental testing of the public Restful Booker service.
 - Elective selection, CI/CD integration, and the walkthrough video are not yet included.

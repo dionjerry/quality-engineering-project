@@ -3,6 +3,7 @@ import type { APIRequestContext, APIResponse } from "@playwright/test";
 import type {
   AuthCredentials,
   Booking,
+  BookingFilter,
   BookingPatch,
 } from "../schemas/api.schemas.js";
 
@@ -23,14 +24,25 @@ export class RestfulBookerClient {
   public async authenticateRaw(body: string): Promise<APIResponse> {
     return this.request.post("/auth", {
       headers: { "Content-Type": "application/json" },
-      data: body,
+      data: Buffer.from(body),
     });
   }
 
   public async createBooking(booking: Booking): Promise<APIResponse> {
+    return this.createBookingPayload(booking);
+  }
+
+  public async createBookingPayload(payload: unknown): Promise<APIResponse> {
     return this.request.post("/booking", {
       headers: { "Content-Type": "application/json" },
-      data: booking,
+      data: payload,
+    });
+  }
+
+  public async createBookingRaw(body: string): Promise<APIResponse> {
+    return this.request.post("/booking", {
+      headers: { "Content-Type": "application/json" },
+      data: Buffer.from(body),
     });
   }
 
@@ -38,14 +50,43 @@ export class RestfulBookerClient {
     return this.request.get(`/booking/${bookingId}`);
   }
 
+  public async getBookingIds(filters: BookingFilter = {}): Promise<APIResponse> {
+    return this.request.get("/booking", { params: filters });
+  }
+
+  public async getBookingIdsWithParams(
+    params: Record<string, string | number>,
+  ): Promise<APIResponse> {
+    return this.request.get("/booking", { params });
+  }
+
   public async updateBooking(
     bookingId: number,
     booking: Booking,
     token?: string,
   ): Promise<APIResponse> {
+    return this.updateBookingPayload(bookingId, booking, token);
+  }
+
+  public async updateBookingPayload(
+    bookingId: number,
+    payload: unknown,
+    token?: string,
+  ): Promise<APIResponse> {
     return this.request.put(`/booking/${bookingId}`, {
       headers: this.protectedHeaders(token),
-      data: booking,
+      data: payload,
+    });
+  }
+
+  public async updateBookingRaw(
+    bookingId: number,
+    body: string,
+    token?: string,
+  ): Promise<APIResponse> {
+    return this.request.put(`/booking/${bookingId}`, {
+      headers: this.protectedHeaders(token),
+      data: Buffer.from(body),
     });
   }
 
@@ -54,9 +95,28 @@ export class RestfulBookerClient {
     booking: BookingPatch,
     token?: string,
   ): Promise<APIResponse> {
+    return this.partialUpdateBookingPayload(bookingId, booking, token);
+  }
+
+  public async partialUpdateBookingPayload(
+    bookingId: number,
+    payload: unknown,
+    token?: string,
+  ): Promise<APIResponse> {
     return this.request.patch(`/booking/${bookingId}`, {
       headers: this.protectedHeaders(token),
-      data: booking,
+      data: payload,
+    });
+  }
+
+  public async partialUpdateBookingRaw(
+    bookingId: number,
+    body: string,
+    token?: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`/booking/${bookingId}`, {
+      headers: this.protectedHeaders(token),
+      data: Buffer.from(body),
     });
   }
 
