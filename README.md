@@ -6,12 +6,16 @@
 
 ## Walkthrough Video
 
-To be added before submission.
+[Watch the 5-minute assessment walkthrough on Loom](https://www.loom.com/share/1e3dfd35ebdc4b6f92ddfbcdc18c012b).
 
 ## Chosen Electives
 
 - Part 2: API Test Automation.
 - Part 5: CI/CD.
+
+I selected Part 2, API Test Automation, because API tests are generally more deterministic, stable, and predictable than UI tests. This allowed me to focus on meaningful functional, boundary, and negative coverage while reducing the risk of delays caused by fragile UI interactions. It also gave me an opportunity to demonstrate how I use AI responsibly to accelerate test design and implementation while independently validating every generated test and defect.
+
+I selected Part 5, CI/CD, because automated testing delivers the most value when it runs consistently without depending on manual execution. The pipeline demonstrates my ability to integrate the API suite into a repeatable engineering workflow with quality gates, parallel execution, isolated test environments, report generation, failure artifacts, and appropriate handling of known defects. AI supported parts of the design and implementation, but I reviewed, corrected, tested, and verified the final pipeline myself.
 
 ## Setup and Run Instructions
 
@@ -84,4 +88,3 @@ Known product defects remain executable with Playwright's expected-failure marke
 - Identical-date bookings are characterized as an open inventory and overbooking question because the API exposes no room/resource identifier or availability rule. They are not marked as a confirmed defect without a product requirement.
 - Restful Booker does not expose a token expiry duration, revocation endpoint, or deterministic method for producing a naturally expired token. Stale/invalid-token rejection is covered without claiming time-based expiry.
 - The API test configuration rejects non-local targets to prevent accidental testing of the public Restful Booker service.
-- The walkthrough video is not yet included.
